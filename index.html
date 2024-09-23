@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>مفكرتي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        #new-task {
+            width: calc(100% - 110px);
+            padding: 10px;
+            font-size: 16px;
+        }
+        #add-task {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #eee;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delete {
+            background: #ff5c5c;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete:hover {
+            background: #ff1c1c;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>مفكرتي</h1>
+    <div>
+        <input type="text" id="new-task" placeholder="أضف مهمة جديدة...">
+        <button id="add-task">إضافة</button>
+    </div>
+    <ul id="task-list">
+        <!-- ستظهر المهام هنا -->
+    </ul>
+</div>
+
+<script>
+    // الحصول على العناصر
+    const newTaskInput = document.getElementById('new-task');
+    const addTaskButton = document.getElementById('add-task');
+    const taskList = document.getElementById('task-list');
+
+    // إضافة مهمة جديدة
+    function addTask() {
+        const taskText = newTaskInput.value.trim();
+        if (taskText === '') {
+            alert('الرجاء إدخال مهمة.');
+            return;
+        }
+
+        // إنشاء عناصر المهمة
+        const listItem = document.createElement('li');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.onclick = toggleTask;
+
+        const taskLabel = document.createElement('span');
+        taskLabel.innerText = taskText;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = 'حذف';
+        deleteButton.className = 'delete';
+        deleteButton.onclick = deleteTask;
+
+        // تجميع العناصر
+        listItem.appendChild(checkbox);
+        listItem.appendChild(taskLabel);
+        listItem.appendChild(deleteButton);
+        taskList.appendChild(listItem);
+
+        // إعادة تعيين حقل الإدخال
+        newTaskInput.value = '';
+    }
+
+    // حذف مهمة
+    function deleteTask() {
+        const listItem = this.parentNode;
+        taskList.removeChild(listItem);
+    }
+
+    // وضع علامة على المهمة كمنتهية
+    function toggleTask() {
+        const taskLabel = this.nextSibling;
+        if (this.checked) {
+            taskLabel.classList.add('completed');
+        } else {
+            taskLabel.classList.remove('completed');
+        }
+    }
+
+    // إضافة المهمة عند النقر على زر الإضافة
+    addTaskButton.addEventListener('click', addTask);
+
+    // إضافة المهمة عند الضغط على زر "Enter"
+    newTaskInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addTask();
+        }
+    });
+</script>
+
+</body>
+</html>
